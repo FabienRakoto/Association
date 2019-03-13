@@ -3,9 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MemberRepository")
+ * @UniqueEntity(
+ * fields = {"email"},
+ * message = "This email was already put by another person"
+ * )
  */
 class Member
 {
@@ -48,6 +55,8 @@ class Member
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\Length(min ="2", minMessage="You must put 2 charcter minimum", 
+     * max="4", maxMessage="You put some charter it must between 2 and 4")
      */
     private $postalCode;
 
@@ -150,12 +159,12 @@ class Member
         return $this;
     }
 
-    public function getAvatar(): ?string
+    public function getAvatar()
     {
         return $this->avatar;
     }
 
-    public function setAvatar(?string $avatar): self
+    public function setAvatar($avatar)
     {
         $this->avatar = $avatar;
 
